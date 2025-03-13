@@ -5,6 +5,7 @@ from domain.exceptions.base import ApplicationException
 
 @dataclass(eq=True)
 class TitleTooLongException(ApplicationException):
+
     text: str
 
     @property
@@ -14,6 +15,7 @@ class TitleTooLongException(ApplicationException):
 
 @dataclass(eq=False)
 class EmptyTextException(ApplicationException):
+
     @property
     def message(self):
-        return "Text dont by empty"
+        return "Text dont be empty"

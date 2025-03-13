@@ -6,4 +6,5 @@ def create_app():
         docs_url='/api/docs',
         description='A simple kafka + ddd example.',
         debug=True
+
     )
