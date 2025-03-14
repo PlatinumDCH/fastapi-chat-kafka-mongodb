@@ -3,9 +3,8 @@ from dataclasses import dataclass
 from domain.exceptions.base import ApplicationException
 
 
-@dataclass(eq=True)
+@dataclass(eq=False)
 class TitleTooLongException(ApplicationException):
-
     text: str
 
     @property
@@ -18,4 +17,4 @@ class EmptyTextException(ApplicationException):
 
     @property
     def message(self):
-        return "Text dont be empty"
+        return "Text cant be empty"

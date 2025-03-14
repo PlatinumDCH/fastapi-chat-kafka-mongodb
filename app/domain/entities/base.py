@@ -28,7 +28,7 @@ class BaseEntity(ABC):
 
     def pull_events(self)->list[BaseEvent]:
         regidtered_events = copy(self._events)
-
         self._events.clear()
+        
         return regidtered_events
     
