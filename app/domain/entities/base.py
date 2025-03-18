@@ -28,12 +28,12 @@ class BaseEntity(ABC):
     def __eq__(self, __value: 'BaseEntity'):
         return self.uid == __value.uid
 
-    def register_events(self, event: BaseEvent)->None:
+    def register_event(self, event: BaseEvent)->None:
         self._events.append(event)
 
     def pull_events(self)->list[BaseEvent]:
-        regidtered_events = copy(self._events)
+        registered_events = copy(self._events)
         self._events.clear()
         
-        return regidtered_events
+        return registered_events
     
