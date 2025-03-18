@@ -13,7 +13,7 @@ router = APIRouter(tags=['Chat'])
 
 
 @router.post(
-        '', 
+        '/', 
         # response_model=CreateChatResponseSchema,
         status_code=status.HTTP_201_CREATED,
         description='Enpoint create new chat, if chat.title exists - return 400Error',
