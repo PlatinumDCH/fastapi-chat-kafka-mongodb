@@ -9,6 +9,7 @@ from domain.values.messages import Text, Title
 
 @dataclass(eq=False)
 class Message(BaseEntity):
+    chat_uid: str
     text: Text
 
 
@@ -24,7 +25,11 @@ class Chat(BaseEntity):
     @classmethod
     def create_chat(cls, title: Title) -> 'Chat':
         new_chat = cls(title=title)
-        new_chat.register_event(NewChatCreated(chat_uid=new_chat.uid, chat_title=new_chat.title.as_generic_type()))
+        new_chat.register_event(NewChatCreated(
+            chat_uid=new_chat.uid,
+            chat_title=new_chat.title.as_generic_type()
+            )
+        )
 
         return new_chat
 

@@ -1,3 +1,4 @@
+from uuid import uuid4
 import pytest
 from datetime import datetime
 
@@ -10,7 +11,7 @@ from domain.entities.messages import Chat, Message
 
 def test_create_message_success_short_text(get_low_sentence):
     text = Text(get_low_sentence)
-    message = Message(text=text)
+    message = Message(text=text, chat_uid=str(uuid4()))
 
     assert message.text == text
     assert message.created_at.date() == datetime.today().date()
@@ -18,7 +19,7 @@ def test_create_message_success_short_text(get_low_sentence):
 
 def test_create_message_success_long_text(get_hight_sentenct):
     text = Text(get_hight_sentenct)
-    message = Message(text=text)
+    message = Message(text=text, chat_uid=str(uuid4()))
 
     assert message.text == text
     assert message.created_at.date() == datetime.today().date()
@@ -40,7 +41,7 @@ def test_create_chat_fail_long_title(get_long_title):
 
 def test_add_chat_to_message(get_short_title, get_low_sentence):
     text = Text(get_low_sentence)
-    message = Message(text=text)
+    message = Message(text=text, chat_uid=str(uuid4()))
 
     title = Title(get_short_title)
     chat = Chat(title=title)
@@ -52,7 +53,7 @@ def test_add_chat_to_message(get_short_title, get_low_sentence):
 
 def test_new_messag_event(get_low_sentence, get_short_title):
     text = Text(get_low_sentence)
-    message = Message(text=text)
+    message = Message(text=text, chat_uid=str(uuid4()))
 
     title = Title(get_short_title)
     chat = Chat(title=title)

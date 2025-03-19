@@ -43,11 +43,19 @@ def _init_container() -> Container:
         return MongoDBMessagesRepository(
             mongo_db_client=client,
             mongo_db_db_name=config.mongodb_chat_database,
-            mongo_db_collection_name=config.mongodb_chat_collection,
+            mongo_db_collection_name=config.mongodb_message_collection,
         )
 
-    container.register(BaseChatsRepository, factory=init_chats_mongodb_repository, scope=Scope.singleton)
-    container.register(BaseMessagesRepository, factory=init_messages_mongodb_repository, scope=Scope.singleton)
+    container.register(
+        BaseChatsRepository,
+        factory=init_chats_mongodb_repository,
+        scope=Scope.singleton
+    )
+    container.register(
+        BaseMessagesRepository,
+        factory=init_messages_mongodb_repository,
+        scope=Scope.singleton
+    )
 
 
     #  Command handlers
