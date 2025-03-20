@@ -13,7 +13,7 @@ class MemoryChatRepository(BaseChatsRepository):
     async def get_chat_by_uid(self, uid: str) -> Chat|None:
         try:
             return next(
-                chat for chat in self._saved_chats if chat.title.as_generic_type() == title
+                chat for chat in self._saved_chats if chat.uid== uid
             )
         except StopIteration:
             return None

@@ -8,14 +8,17 @@ from application.api.messages.schemas import (
     CreateChatResponseSchema,
     CreateMessageResponseSchema,
     CreateMessageShema,
-    ChatDetailSchema
+    ChatDetailSchema,
+    GetMessageQueryResponseSchema,
+    MessageDetailSchema,
 )
 from application.api.schemas import ErrorSchema
 from domain.exceptions.base import ApplicationException
+from application.api.messages.filters import GetMessagesFilters
 from logic.commands.messages import CreateChatCommand, CreateMessageCommand
 from logic.init import init_container
 from logic.mediator import Mediator
-from logic.queries.messages import GetChatDetailQuery
+from logic.queries.messages import GetChatDetailQuery, GetMessagesQuery
 
 
 router = APIRouter(tags=['Chat'])
@@ -100,3 +103,37 @@ async def get_chat_with_messages_handler(
         )
     
     return ChatDetailSchema.from_entity(chat)
+
+@router.get(
+    '/{chat_uid}/messages',
+    status_code=status.HTTP_200_OK,
+    description='All send messages in chat',
+    responses={
+        status.HTTP_200_OK: {'model': GetMessageQueryResponseSchema},
+        status.HTTP_400_BAD_REQUEST: {'model': ErrorSchema},
+    },
+)
+async def get_messagrs_handler(
+    chat_uid: str,
+    filters: GetMessagesFilters = Depends(),
+    container: Container = Depends(init_container),
+) -> GetMessageQueryResponseSchema:
+    mediator: Mediator = container.resolve(Mediator)
+
+    try:
+        messages, count = await mediator.handle_query(
+            GetMessagesQuery(chat_uid=chat_uid, filters=filters.to_infra())
+        )
+        
+    except ApplicationException as exception:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={'error': exception.message}
+        )
+    
+    return GetMessageQueryResponseSchema(
+        count=count,
+        limit=filters.limit,
+        offset=filters.offset,
+        items=[MessageDetailSchema.from_entity(message) for message in messages]
+    )
